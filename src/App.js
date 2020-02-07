@@ -8,80 +8,59 @@ import UploadForm from "./components/UploadForm";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
-
-  html { font-size:120%; }
-
-  h1 {
-    font-size: 200%;
-    margin: 0 0 3rem;
-    font-family: "Varela Round", sans-serif;
+  * {
+    box-sizing: border-box;
   }
-
+  html {
+    font-size:20px;
+  }
   body {
-    background-color: #FAFAFA;
     font-family: "Open Sans", sans-serif;
   }
-
   p {
     margin: 1rem 0;
   }
-
-  button {
-    padding: 0.5rem;
-    border-radius 0;
-    border: 3px #FFF solid;
-    background: transparent;
-    color: #FFF;
-    text-transform: uppercase;
-  }
 `
 
-const DISPLAY_FORM = 1;
-const DISPLAY_UPLOADING = 2;
-const DISPLAY_THANKS = 3;
-
-const DEFAULT_API_DATA = {
-  result: null,
-};
-
 const StyledApp = styled.main`
-  margin: 4rem auto 0;
-  max-width: 1024px;
-
-  & > div {
-    min-height: 200px;
-  }
+  margin: 0;
 `;
+
+const INITIAL = 1;
+const LOADING = 2;
 
 function App() {
 
-  const [state, setState] = useState(DISPLAY_FORM);
-  const [{ result }, setData] = useState(DEFAULT_API_DATA);
+  const [result, setResult] = useState(null);
+  const [state, setState] = useState(INITIAL);
 
   const onSubmit = () => {
-    setState(DISPLAY_UPLOADING);
-    setTimeout(() => {
-      setState(DISPLAY_THANKS);
-      setTimeout(() => setData({
-        result: 0.99
-      }), 750);
-    }, 750);
+    setState(LOADING);
+    setTimeout(onSubmitSuccess, 500);
   }
-
+  const onSubmitSuccess = () => {
+    setTimeout(onResult, 500);
+  }
+  const onResult = () => {
+    setState(INITIAL);
+    setResult(0.99);
+  }
   const onReset = () => {
-    setState(DISPLAY_FORM);
-    setData(DEFAULT_API_DATA);
+    setResult(null);
   }
 
   return (
     <StyledApp>
       <GlobalStyle />
 
-      <h1>Helicopter Shark</h1>
-
-      {(state === DISPLAY_FORM) && <UploadForm onSubmit={onSubmit} />}
-      {(state === DISPLAY_UPLOADING) && <Loader />}
-      {(state === DISPLAY_THANKS) && <Result result={result} onReset={onReset} />}
+      {(state === LOADING) ?
+        <Loader />
+        :
+        (result === null) ?
+          <UploadForm onSubmit={onSubmit} />
+          :
+          <Result result={result} onReset={onReset} />
+      }
 
     </StyledApp>
   );

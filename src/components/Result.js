@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components'
 
-const StyledResult = styled.div`
-  border-radius: 24px;
-  padding: 36px;
-  text-align: center;
-  background-color: #27A9F1;
-  color: #FFF;
-`;
+import Div from "../elements/Div";
+import Button from "../elements/Button";
+
+const StyledDiv = styled(Div)`background-color: #27A9F1;`;
 
 function ProcessingMessage() {
   return <p>Thanks! We are processing now...</p>;
@@ -21,12 +18,12 @@ function Scores({ result }) {
 
 export default function Result({ result, onReset }) {
 
-  return <StyledResult>
+  return <StyledDiv>
 
     {(result === null) ? <ProcessingMessage /> : <Scores result={result} />}
 
     <div>
-      <button type="button" onClick={(e) => onReset()}>Go back</button>
+      <Button type="button" onClick={(e) => onReset()}>Go back</Button>
     </div>
-  </StyledResult>
+  </StyledDiv>
 }

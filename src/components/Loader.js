@@ -1,18 +1,16 @@
 import React from 'react';
 import styled from 'styled-components'
+import Div from "../elements/Div";
 
-const StyledLoader = styled.div`
-  border-radius: 24px;
-  padding: 36px;
-  text-align: center;
-  background-color: #66D7D1;
-  color: #FFF;
-`;
+const StyledDiv = styled(Div)`background-color: #66D7D1;`;
 
 export default function Loader() {
-  return <StyledLoader>
+  return <StyledDiv>
     <p>
       Loading...
     </p>
-  </StyledLoader>
+    <p>
+      <i class="fas fa-spinner fa-3x fa-spin"></i>
+    </p>
+  </StyledDiv>
 }
