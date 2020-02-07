@@ -31,7 +31,7 @@ const LOADING = 2;
 
 function App() {
 
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<null|number>(null);
   const [state, setState] = useState(INITIAL);
 
   const onSubmit = () => {

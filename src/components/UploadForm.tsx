@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Div from "../elements/Div";
 import Button from "../elements/Button";
+import { UploadFormProps } from './types';
 
 const StyledDiv = styled(Div)`background-color: #3D3A4B;`;
 
@@ -11,7 +12,7 @@ const Header = styled.h1`
   font-family: "Varela Round", sans-serif;
 `;
 
-export default function UploadForm({ onSubmit }) {
+export default function UploadForm({ onSubmit }: UploadFormProps) {
   return <StyledDiv>
 
     <Header>Helicopter Shark</Header>

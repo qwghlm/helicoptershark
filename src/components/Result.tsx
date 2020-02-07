@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Div from "../elements/Div";
 import Button from "../elements/Button";
+import { ResultProps } from './types';
 
 const StyledDiv = styled(Div)`background-color: #27A9F1;`;
 
@@ -10,13 +11,13 @@ function ProcessingMessage() {
   return <p>Thanks! We are processing now...</p>;
 }
 
-function Scores({ result }) {
+function Scores({ result }: { result: number }) {
   return <p>
     Hurray! The image is a {Math.round(result*1000)/10}% match!
   </p>
 }
 
-export default function Result({ result, onReset }) {
+export default function Result({ result, onReset }: ResultProps) {
 
   return <StyledDiv>
 

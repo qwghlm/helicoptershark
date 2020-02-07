@@ -24,7 +24,7 @@ After that, it is relatively trivial* to expand this to an app that all misinfor
 
 ## Stuff that will make this look good
 
-* SCSS (or JSS?) & Typescript
+* TSX -> TS
 * Testing (with coverage)
 * Linting
 * CI
