@@ -22,6 +22,16 @@ After that, it is relatively trivial* to expand this to an app that all misinfor
   6. Generalise backend for other misinformation images
   7. Other stuff (mobile app?)
 
+## Stuff that will make this look good
+
+* SCSS & Typescript
+* Testing (with coverage)
+* Linting
+* CI
+* Hosting (Docker?)
+* Setup with AWS
+* Security (XSS/CSP)
+
 ## Running
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
