@@ -25,8 +25,9 @@ After that, it is relatively trivial* to expand this to an app that all misinfor
 ## Stuff that will make this look good
 
 * TSX -> TS
-* Testing (with coverage)
-* Linting
+* Eject
+* Remove unnecessary modules
+* Replace yarn with npm
 * CI
 * Hosting (Docker?)
 * Setup with AWS
