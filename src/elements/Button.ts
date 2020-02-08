@@ -7,5 +7,9 @@ const Button = styled.button`
   background: transparent;
   color: #FFF;
   text-transform: uppercase;
+
+  &[disabled] {
+    opacity: 50%;
+  }
 `;
 export default Button;

@@ -1,29 +1,14 @@
 import React, { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components'
-import reset from 'styled-reset'
+import styled from 'styled-components'
 
 import Result from "./components/Result";
 import Loader from "./components/Loader";
 import UploadForm from "./components/UploadForm";
-
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-  * {
-    box-sizing: border-box;
-  }
-  html {
-    font-size:20px;
-  }
-  body {
-    font-family: "Open Sans", sans-serif;
-  }
-  p {
-    margin: 1rem 0;
-  }
-`
+import GlobalStyle from './styles/GlobalStyle';
 
 const StyledApp = styled.main`
   margin: 0;
+  font-family: "Open Sans", sans-serif;
 `;
 
 const INITIAL = 1;

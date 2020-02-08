@@ -3,16 +3,17 @@ import styled from 'styled-components'
 
 import { LoaderProps } from "./types";
 import Div from "../elements/Div";
+import P from '../elements/P';
 
 const StyledDiv = styled(Div)`background-color: #66D7D1;`;
 
 export default function Loader(props: LoaderProps) {
   return <StyledDiv>
-    <p>
+    <P>
       Loading...
-    </p>
-    <p>
+    </P>
+    <P>
       <i className="fas fa-spinner fa-3x fa-spin"></i>
-    </p>
+    </P>
   </StyledDiv>;
 }
