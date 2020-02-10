@@ -11,7 +11,7 @@ interface FileItemProps {
   name: string;
 }
 
-export default function FileItem({ name }: FileItemProps) {
+export default function FileItem({ name }: FileItemProps): JSX.Element {
   return <StyledFileItem>
     { name }
   </StyledFileItem>

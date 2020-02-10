@@ -19,15 +19,15 @@ const StyledDropRoot = styled.div<DropRootProps>`
   margin: 1rem 0;
   border-width: 2px;
   border-color: #FFF;
-  border-style: ${props => props.isFull ? "solid" : "dashed"};
-  ${props => props.isDragActive && css`background: rgba(255,255,255,0.8);` }
+  border-style: ${(props): string => props.isFull ? "solid" : "dashed"};
+  ${(props): any => props.isDragActive && css`background: rgba(255,255,255,0.8);` }
 `;
 
 const StyledDropInput = styled.div`
   padding: 1rem 0;
 `
 
-export default function DropZone({ files, maxFiles = 1, onChange }: DropZoneProps) {
+export default function DropZone({ files, maxFiles = 1, onChange }: DropZoneProps): JSX.Element {
 
   const isFull = files.length === maxFiles;
 

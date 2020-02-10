@@ -7,7 +7,7 @@ import P from '../elements/P';
 
 const StyledDiv = styled(Div)`background-color: #66D7D1;`;
 
-export default function Loader(props: LoaderProps) {
+export default function Loader(props: LoaderProps): JSX.Element {
   return <StyledDiv>
     <P>
       Loading...

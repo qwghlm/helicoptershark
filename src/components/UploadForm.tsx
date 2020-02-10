@@ -22,7 +22,7 @@ const DEFAULT_STATE = {
   files: []
 }
 
-export default function UploadForm({ onSubmit }: UploadFormProps) {
+export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
 
   const [ values, setValues ] = useState<FormState>(DEFAULT_STATE)
   const {
@@ -31,10 +31,10 @@ export default function UploadForm({ onSubmit }: UploadFormProps) {
 
   const buttonDisabled = files.length === 0;
 
-  const onFilesChange = (files: string[]) => {
+  const onFilesChange = (files: string[]): void => {
     setValues({files})
   }
-  const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     console.log(values);
     onSubmit();
   }

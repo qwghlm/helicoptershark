@@ -14,23 +14,23 @@ const StyledApp = styled.main`
 const INITIAL = 1;
 const LOADING = 2;
 
-function App() {
+function App(): JSX.Element {
 
   const [result, setResult] = useState<null|number>(null);
   const [state, setState] = useState(INITIAL);
 
-  const onSubmit = () => {
+  const onSubmit = (): void => {
     setState(LOADING);
     setTimeout(onSubmitSuccess, 500);
   }
-  const onSubmitSuccess = () => {
+  const onSubmitSuccess = (): void => {
     setTimeout(onResult, 500);
   }
-  const onResult = () => {
+  const onResult = (): void => {
     setState(INITIAL);
     setResult(0.99);
   }
-  const onReset = () => {
+  const onReset = (): void => {
     setResult(null);
   }
 

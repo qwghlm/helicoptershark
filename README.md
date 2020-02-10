@@ -22,20 +22,15 @@ After that, it is relatively trivial* to expand this to an app that all misinfor
   6. Generalise backend for other misinformation images
   7. Other stuff (mobile app?)
 
-## Stuff that will make this look good
+## Housekeeping
 
-* TSX -> TS
-* Eject
-* Remove unnecessary modules
-* Replace yarn with npm
 * CI
 * Hosting (Docker?)
 * Setup with AWS
-* Security (XSS/CSP)
 
 ## Running
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was originally created with [Create React App](https://github.com/facebook/create-react-app).
 
 ### `yarn start`
 
@@ -54,3 +49,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
+
+### `yarn lint`
+
+Lints the codebase
