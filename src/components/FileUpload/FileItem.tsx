@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import Button from '../../elements/Button';
-import { getUploadUrl } from './api';
+import { getUploadUrl, uploadFile } from './api';
 
 const StyledFileItem = styled.div`
   padding: 1rem 0;
@@ -24,10 +24,13 @@ export default function FileItem({ file, hash, onDelete }: FileItemProps): JSX.E
   useEffect(() => {
     getUploadUrl(file.name)
       .then(uploadUrl => {
-        setUrl(uploadUrl)
         setPercent(0.01);
+        uploadFile(file, uploadUrl)
+          .then(fileName => {
+            setPercent(1);
+          })
       })
-  });
+  }, [file]);
 
   const onClick = (e: React.MouseEvent): void => {
     onDelete(hash);
@@ -35,7 +38,7 @@ export default function FileItem({ file, hash, onDelete }: FileItemProps): JSX.E
 
   console.log(url);
 
-return <StyledFileItem>
+  return <StyledFileItem>
     { name }<br/>
     { Math.floor(percent*100) }% uploaded
     <Button onClick={onClick}>X</Button>
