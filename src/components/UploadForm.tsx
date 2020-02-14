@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Button from "../elements/Button";
 import Div from "../elements/Div";
-import DropZone from "./DropZone";
+import FileUpload from "./FileUpload";
 import P from '../elements/P';
 import { UploadFormProps } from './types';
 
@@ -19,7 +19,9 @@ interface FormState {
 }
 
 const DEFAULT_STATE = {
-  files: []
+  files: [
+
+  ]
 }
 
 export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
@@ -35,7 +37,6 @@ export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
     setValues({files})
   }
   const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    console.log(values);
     onSubmit();
   }
 
@@ -47,7 +48,7 @@ export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
 
     <form action="">
       <div>
-        <DropZone files={files} onChange={onFilesChange} />
+        <FileUpload files={files} onChange={onFilesChange} />
       </div>
 
       <P>
