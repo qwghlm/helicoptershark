@@ -14,5 +14,8 @@ node_modules/
 # Environments
 .env
 
+# Serverless
+.serverless
+
 # Editor settings
 .vscode
