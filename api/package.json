@@ -1,0 +1,14 @@
+{
+  "name": "helicoptershark-api",
+  "version": "0.0.1",
+  "description": "Serverless API for helicoptershark",
+  "main": "handler.js",
+  "author": "Chris Applegate",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "aws-sdk": "^2.619.0",
+    "serverless-offline": "^5.12.1",
+    "uuid": "^3.4.0"
+  }
+}

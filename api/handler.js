@@ -1,6 +1,10 @@
 'use strict';
 
 const AWS = require('aws-sdk');
+const uuid = require('uuid/v4');
+const errors = require("./errors");
+
+// TODO: Check S3 credentials
 AWS.config.update({
   region: process.env.AWS_S3_REGION || 'eu-west-1'
 });
@@ -14,39 +18,45 @@ module.exports.upload = async event => {
 
   const { body } = event;
   if (!body) {
-    return JSON.stringify({
-      statusCode: 400,
-      body: {
-        error: "Bad request"
-      }
-    })
+    return errors.ERROR_400;
   }
 
-  const { fileName } = JSON.parse(body);
+  let parsedBody;
+  try {
+    parsedBody = JSON.parse(body);
+  }
+  catch (e) {
+    return errors.ERROR_400;
+  }
+
+  let { fileName } = parsedBody;
   if (!fileName) {
-    return JSON.stringify({
-      statusCode: 400,
-      body: {
-        error: "Bad request"
-      }
-    })
+    return errors.ERROR_400;
   }
 
+  if (fileName.indexOf(".") === -1) {
+    fileName = uuid();
+  }
+  else {
+    fileName = uuid() + "." + fileName.split(".").pop();
+  }
+
+  // TODO: Env var here pls
   const s3Params = {
     Bucket: "helicoptershark-storage-dev",
     Key: fileName,
     ACL: "private",
+    Expires: 300,
   }
 
   return new Promise((resolve, reject) => {
-    let uploadURL = s3.getSignedUrl('putObject', s3Params)
+    let url = s3.getSignedUrl('putObject', s3Params);
     resolve({
       statusCode: 200,
       body: JSON.stringify({
-        url: uploadURL,
-        fileName: fileName
+        url,
+        fileName
       })
-    })
+    });
   })
-
 };
