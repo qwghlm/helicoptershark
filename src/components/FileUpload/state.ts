@@ -1,19 +1,22 @@
 import md5 from "md5";
 
 import { FileUploadState, RemoteFile } from "./types";
-import { UNLOADED, LOADING, LOADED, ERROR } from './api';
 
 function hashFile(f: File): string {
   return md5(f.name + f.size + f.lastModified)
 }
 
 // DropZone state is complicated so we use a useReducer to record its state
-
 export const FILE_ADDED = "fileAdded";
 export const FILE_START_UPLOAD = "fileStartUpload";
 export const FILE_UPLOAD_COMPLETE = "fileUploadComplete";
 export const FILE_DELETED = "fileDeleted";
 export const FILE_ERROR = "fileError";
+
+export const UNLOADED = 0;
+export const LOADING = 1;
+export const LOADED = 2;
+export const ERROR = -1;
 
 function updateFiles(files: RemoteFile[], hash: string, value: Partial<RemoteFile>): RemoteFile[] {
   return files.map((item) => {

@@ -2,7 +2,9 @@
 
 const AWS = require('aws-sdk');
 const uuid = require('uuid/v4');
+
 const errors = require("./errors");
+const parser = require("./parser");
 
 // TODO: Check S3 credentials
 AWS.config.update({
@@ -23,20 +25,7 @@ module.exports.root = async event => {
 
 module.exports.upload = async event => {
 
-  const { body } = event;
-  if (!body) {
-    return errors.ERROR_400;
-  }
-
-  let parsedBody;
-  try {
-    parsedBody = JSON.parse(body);
-  }
-  catch (e) {
-    return errors.ERROR_400;
-  }
-
-  let { fileName } = parsedBody;
+  let { fileName } = parser.parseBody(event);
   if (!fileName) {
     return errors.ERROR_400;
   }
@@ -48,9 +37,8 @@ module.exports.upload = async event => {
     fileName = uuid() + "." + fileName.split(".").pop();
   }
 
-  // TODO: Env var here pls
   const s3Params = {
-    Bucket: "helicoptershark-storage-dev",
+    Bucket: "helicoptershark-storage-dev",  // TODO: Env var here pls
     Key: fileName,
     ACL: "private",
     Expires: 300,
@@ -66,4 +54,13 @@ module.exports.upload = async event => {
       })
     });
   })
+};
+
+module.exports.process = async event => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      id: 1234
+    })
+  }
 };

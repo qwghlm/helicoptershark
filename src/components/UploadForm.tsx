@@ -16,19 +16,17 @@ const DEFAULT_STATE = {
 
 export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
 
-  const [ values, setValues ] = useState<UploadFormState>(DEFAULT_STATE)
-  const { files } = values;
-
-  const buttonDisabled = files.length === 0;
+  const [ formState, setFormState ] = useState<UploadFormState>(DEFAULT_STATE)
+  const { files } = formState;
 
   const onFilesChange = (files: string[]): void => {
-    setValues({
-      ...values,
+    setFormState({
+      ...formState,
       files
     });
   }
   const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    onSubmit();
+    onSubmit(files[0]);
   }
 
   return <StyledDiv>
@@ -43,7 +41,7 @@ export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
       </div>
 
       <P>
-        <Button type="button" disabled={buttonDisabled} onClick={onClick}>Go</Button>
+        <Button type="button" disabled={files.length === 0} onClick={onClick}>Go</Button>
       </P>
     </form>
   </StyledDiv>

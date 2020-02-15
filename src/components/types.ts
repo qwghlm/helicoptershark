@@ -1,10 +1,15 @@
+export interface ResultData {
+  id: number;
+  match: number;
+}
+
 export interface ResultProps {
-  result: null | number;
+  result: ResultData;
   onReset: () => void;
 }
 
 export interface UploadFormProps {
-  onSubmit: () => void;
+  onSubmit: (fileName: string) => void;
 }
 
 export interface UploadFormState {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import Button from '../../elements/Button';
-import { UNLOADED, LOADING, LOADED, ERROR } from './api';
+import { UNLOADED, LOADING, LOADED, ERROR } from './state';
 
 const StyledFileItem = styled.div`
   padding: 1rem 0;

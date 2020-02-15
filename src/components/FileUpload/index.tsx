@@ -4,8 +4,8 @@ import React, { useEffect, useReducer } from 'react'
 
 import FileItem from './FileItem';
 import DropZone from "./DropZone";
-import { getUploadUrl, uploadFile, UNLOADED } from './api';
-import reducer, { FILE_ADDED, FILE_START_UPLOAD, FILE_UPLOAD_COMPLETE, FILE_DELETED, FILE_ERROR }  from "./state";
+import { getUploadUrl, uploadFile } from '../../api';
+import reducer, { UNLOADED, FILE_ADDED, FILE_START_UPLOAD, FILE_UPLOAD_COMPLETE, FILE_DELETED, FILE_ERROR }  from "./state";
 
 export interface DropZoneProps {
   maxFiles?: number;

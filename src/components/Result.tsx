@@ -13,17 +13,19 @@ function ProcessingMessage(): JSX.Element {
   return <P>Thanks! We are processing now...</P>;
 }
 
-function Scores({ result }: { result: number }): JSX.Element {
+function Scores({ match }: { match: number }): JSX.Element {
   return <P>
-    Hurray! The image is a {Math.round(result*1000)/10}% match!
+    Hurray! The image is a {Math.round(match*1000)/10}% match!
   </P>
 }
 
 export default function Result({ result, onReset }: ResultProps): JSX.Element {
 
+  const { match } = result;
+
   return <StyledDiv>
 
-    {(result === null) ? <ProcessingMessage /> : <Scores result={result} />}
+    {(result === null) ? <ProcessingMessage /> : <Scores match={match} />}
 
     <div>
       <Button type="button" onClick={(e): void => onReset()}>Go back</Button>

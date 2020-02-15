@@ -65,11 +65,18 @@ functions:
           path: /
           method: get
 
-  hello:
+  upload:
     handler: handler.upload
     events:
       - http:
           path: api/v1/upload
+          method: post
+
+  process:
+    handler: handler.process
+    events:
+      - http:
+          path: api/v1/process
           method: post
 
 #      - sns: greeter-topic
