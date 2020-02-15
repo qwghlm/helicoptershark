@@ -12,7 +12,14 @@ const s3 = new AWS.S3({
   signatureVersion: 'v4'
 });
 
-// TOOD: Root & standard error
+// TOOD: Error
+
+module.exports.root = async event => {
+  return {
+    statusCode: 200,
+    body: "Hello world"
+  }
+}
 
 module.exports.upload = async event => {
 

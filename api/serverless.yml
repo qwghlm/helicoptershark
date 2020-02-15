@@ -58,6 +58,13 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  root:
+    handler: handler.root
+    events:
+      - http:
+          path: /
+          method: get
+
   hello:
     handler: handler.upload
     events:
