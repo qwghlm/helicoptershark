@@ -1,37 +1,75 @@
-import React, { useState } from 'react'
-import md5 from "md5";
+/* eslint:disable */
+
+import React, { useEffect, useReducer } from 'react'
 
 import FileItem from './FileItem';
 import DropZone from "./DropZone";
+import { getUploadUrl, uploadFile, UNLOADED } from './api';
+import reducer, { FILE_ADDED, FILE_START_UPLOAD, FILE_UPLOAD_COMPLETE, FILE_DELETED }  from "./state";
 
 export interface DropZoneProps {
-  files: string[];
   maxFiles?: number;
   onChange: (files: string[]) => void;
 }
 
-function hashFile(f: File): string {
-  return md5(f.name)
-}
+// TODO: Filters on max filesize, file type
+export default function FileUpload({ maxFiles = 1, onChange }: DropZoneProps): JSX.Element {
 
-export default function FileUpload({ files, maxFiles = 1, onChange }: DropZoneProps): JSX.Element {
+  const [state, dispatch] = useReducer(reducer, {files: []});
+  const { files } = state;
 
-  const [fileData, setFileData] = useState<File[]>([]);
-
+  // Handlers for accepting an added file
   const onFileAdd = (newFiles: File[]): void => {
-    const remainingPlaces = maxFiles - fileData.length;
-    if (remainingPlaces > 0) {
-      setFileData(fileData.concat(newFiles.slice(0, remainingPlaces)))
+    const remainingPlaces = maxFiles - files.length;
+    if (remainingPlaces <= 0) {
+      return;
     }
+    newFiles.slice(0, remainingPlaces).forEach((file, i) => {
+      dispatch({
+        type: FILE_ADDED,
+        file,
+      });
+    });
   }
   const onFileDelete = (hash: string): void => {
-    setFileData(fileData.filter(f => hashFile(f) !== hash))
+    dispatch({
+      type: FILE_DELETED,
+      hash,
+    })
   }
 
+  // Watches changes in state and if any new unloaded files added, initialises loading
+  // for them
+  useEffect(() => {
+    files.filter(({status}) => status === UNLOADED).forEach(({ hash, file }) => {
+      dispatch({
+        type: FILE_START_UPLOAD,
+        hash,
+      });
+      getUploadUrl(file.name)
+        .then(({ url, fileName }) => {
+          uploadFile(file, url)
+            .then(() => {
+              dispatch({
+                type: FILE_UPLOAD_COMPLETE,
+                hash,
+                fileName,
+              })
+            })
+        })
+    });
+  }, [files])
+
+  useEffect(() => {
+    const fileNames = files.map(item => item.remoteName).filter(name => name !== null);
+    onChange(fileNames as string[])
+  }, [files]);
+
   return (
-    <DropZone isFull={fileData.length === maxFiles} onFileAdd={onFileAdd}>
-      { fileData.map((file, i) =>
-          <FileItem key={hashFile(file)} file={file} hash={hashFile(file)} onDelete={onFileDelete} />)
+    <DropZone isFull={files.length === maxFiles} onFileAdd={onFileAdd}>
+      { files.map(({file, hash, status}, i) =>
+          <FileItem key={hash} hash={hash} file={file}
+            status={status} onDelete={onFileDelete} />)
       }
     </DropZone>
   )

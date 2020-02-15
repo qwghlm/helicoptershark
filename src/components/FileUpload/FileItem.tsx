@@ -1,46 +1,101 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import Button from '../../elements/Button';
-import { getUploadUrl, uploadFile } from './api';
+import { UNLOADED, LOADING, LOADED, ERROR } from './api';
 
 const StyledFileItem = styled.div`
   padding: 1rem 0;
   margin: .2rem;
   border: 1px #FFF solid;
+  text-align: left;
+  display: flex;
+  flex-flow: row wrap;
+
+  & div:nth-child(1) {
+    flex: 0 1 80px;
+    text-align: center;
+  }
+
+  & div:nth-child(2) {
+    flex: 0 1 calc(100% - 128px);
+    text-align: left;
+  }
+
+  & div:nth-child(3) {
+    flex: 0 1 48px;
+    text-align: center;
+  }
+
+  & div:nth-child(4) {
+    flex: 0 1 100%;
+    padding-left: 80px;
+    font-size: 80%;
+  }
 `;
 
 interface FileItemProps {
   file: File;
   hash: string;
+  status: number;
   onDelete: (hash: string) => void;
 }
 
-export default function FileItem({ file, hash, onDelete }: FileItemProps): JSX.Element {
+interface LoadingProps {
+  status: number;
+}
+
+
+// TODO Error catching, setting filename, icons
+
+function LoadingIcon({ status }: LoadingProps): JSX.Element {
+  let className;
+
+  if (status === UNLOADED || status === LOADING) {
+    className = "fa-spinner";
+  }
+  else if (status === LOADED) {
+    className = "fa-check-circle";
+  }
+  else {
+    className = "fa-exclamation-triangle";
+  }
+  return <i className={`fas fa-2x ${className}`}></i>
+}
+
+function LoadingStatus({ status }: LoadingProps): JSX.Element {
+  if (status === LOADING) {
+    return <React.Fragment>Loading...</React.Fragment>
+  }
+  else if (status === LOADED) {
+    return <React.Fragment>Loaded!</React.Fragment>
+  }
+  else if (status === ERROR) {
+    return <React.Fragment>Error loading, please retry.</React.Fragment>
+
+  }
+  return <React.Fragment />
+}
+
+export default function FileItem({ file, hash, status, onDelete }: FileItemProps): JSX.Element {
 
   const { name } = file;
-  const [ url, setUrl ] = useState<string|null>(null);
-  const [ percent, setPercent ] = useState(0);
-
-  useEffect(() => {
-    getUploadUrl(file.name)
-      .then(uploadUrl => {
-        setPercent(0.01);
-        uploadFile(file, uploadUrl)
-          .then(fileName => {
-            setPercent(1);
-          })
-      })
-  }, [file]);
 
   const onClick = (e: React.MouseEvent): void => {
     onDelete(hash);
   }
 
-  console.log(url);
-
   return <StyledFileItem>
-    { name }<br/>
-    { Math.floor(percent*100) }% uploaded
-    <Button onClick={onClick}>X</Button>
+    <div>
+      <LoadingIcon status={status} />
+    </div>
+    <div>
+      { name }
+    </div>
+    <div>
+      <Button onClick={onClick}>X</Button>
+    </div>
+    <div>
+      <LoadingStatus status={status} />
+    </div>
   </StyledFileItem>
 }

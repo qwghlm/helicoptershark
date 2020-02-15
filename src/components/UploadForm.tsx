@@ -34,7 +34,10 @@ export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
   const buttonDisabled = files.length === 0;
 
   const onFilesChange = (files: string[]): void => {
-    setValues({files})
+    setValues({
+      ...values,
+      files
+    });
   }
   const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     onSubmit();
@@ -48,7 +51,7 @@ export default function UploadForm({ onSubmit }: UploadFormProps): JSX.Element {
 
     <form action="">
       <div>
-        <FileUpload files={files} onChange={onFilesChange} />
+        <FileUpload onChange={onFilesChange} />
       </div>
 
       <P>
