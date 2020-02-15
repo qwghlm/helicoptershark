@@ -1,11 +1,10 @@
 import md5 from "md5";
 
-import { FileUploadState } from "./types";
-import { UNLOADED, LOADING, LOADED } from './api';
-
+import { FileUploadState, RemoteFile } from "./types";
+import { UNLOADED, LOADING, LOADED, ERROR } from './api';
 
 function hashFile(f: File): string {
-  return md5(f.name)
+  return md5(f.name + f.size + f.lastModified)
 }
 
 // DropZone state is complicated so we use a useReducer to record its state
@@ -14,13 +13,24 @@ export const FILE_ADDED = "fileAdded";
 export const FILE_START_UPLOAD = "fileStartUpload";
 export const FILE_UPLOAD_COMPLETE = "fileUploadComplete";
 export const FILE_DELETED = "fileDeleted";
+export const FILE_ERROR = "fileError";
+
+function updateFiles(files: RemoteFile[], hash: string, value: Partial<RemoteFile>): RemoteFile[] {
+  return files.map((item) => {
+    if (item.hash === hash) {
+      return { ...item, ...value }
+    }
+    return item;
+  })
+}
 
 export default function reducer(state: FileUploadState, action: any): FileUploadState {
 
   const { files } = state;
 
-  if (action.type === FILE_ADDED) {
-    const { file } = action;
+  const { type, file, hash, fileName } = action;
+
+  if (type === FILE_ADDED) {
     const newFile = {
       file,
       hash: hashFile(file),
@@ -33,42 +43,33 @@ export default function reducer(state: FileUploadState, action: any): FileUpload
     }
   }
 
-  if (action.type === FILE_START_UPLOAD) {
-    const { hash } = action;
+  if (type === FILE_START_UPLOAD) {
     return {
       ...state,
-      files: files.map((item) => {
-        if (item.hash === hash) {
-          return { ...item, status: LOADING }
-        }
-        return item;
-      })
+      files: updateFiles(files, hash, { status: LOADING })
     }
   }
 
-  if (action.type === FILE_UPLOAD_COMPLETE) {
-    const { hash, fileName } = action;
+  if (type === FILE_UPLOAD_COMPLETE) {
     return {
       ...state,
-      files: files.map((item) => {
-        if (item.hash === hash) {
-          return {
-            ...item,
-            remoteName: fileName,
-            status: LOADED }
-        }
-        return item;
-      })
+      files: updateFiles(files, hash, { remoteName: fileName, status: LOADED })
     }
   }
 
-  if (action.type === FILE_DELETED) {
-    const { hash } = action;
+  if (type === FILE_ERROR) {
+    return {
+      ...state,
+      files: updateFiles(files, hash, { status: ERROR })
+    }
+  }
+
+  if (type === FILE_DELETED) {
     return {
       ...state,
       files: files.filter(file => file.hash !== hash)
     }
   }
 
-  throw new Error();
+  throw new Error("Unrecognized action type");
 }

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import {useDropzone} from 'react-dropzone'
 
 interface StyledDivProps {
@@ -12,7 +12,7 @@ const StyledDiv = styled.div<StyledDivProps>`
   border-width: 2px;
   border-color: #FFF;
   border-style: ${(props): string => props.isFull ? "solid" : "dashed"};
-  ${(props): any => props.isDragActive && css`background: rgba(255,255,255,0.8);` }
+  ${(props): string => props.isDragActive ? "background: rgba(255,255,255,0.2);" : "" }
 `;
 
 const StyledDropInput = styled.div`
@@ -22,7 +22,7 @@ const StyledDropInput = styled.div`
 interface DropZoneProps {
   isFull: boolean;
   onFileAdd: (files: File[]) => void;
-  children?: any;
+  children?: React.ReactNode[];
 }
 
 export default function DropZone({ isFull, onFileAdd, children }: DropZoneProps): JSX.Element {
@@ -34,7 +34,7 @@ export default function DropZone({ isFull, onFileAdd, children }: DropZoneProps)
   const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop})
   const message = isDragActive ? "Drop files here..." : "Drag 'n' drop some files here, or click to select files";
 
-  return <StyledDiv {...getRootProps()} isDragActive={isDragActive} isFull={isFull}>
+  return <StyledDiv {...getRootProps()} isDragActive={isDragActive && !isFull} isFull={isFull}>
     { children }
 
     { !isFull && <StyledDropInput>

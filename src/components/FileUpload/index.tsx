@@ -5,7 +5,7 @@ import React, { useEffect, useReducer } from 'react'
 import FileItem from './FileItem';
 import DropZone from "./DropZone";
 import { getUploadUrl, uploadFile, UNLOADED } from './api';
-import reducer, { FILE_ADDED, FILE_START_UPLOAD, FILE_UPLOAD_COMPLETE, FILE_DELETED }  from "./state";
+import reducer, { FILE_ADDED, FILE_START_UPLOAD, FILE_UPLOAD_COMPLETE, FILE_DELETED, FILE_ERROR }  from "./state";
 
 export interface DropZoneProps {
   maxFiles?: number;
@@ -31,6 +31,7 @@ export default function FileUpload({ maxFiles = 1, onChange }: DropZoneProps): J
       });
     });
   }
+
   const onFileDelete = (hash: string): void => {
     dispatch({
       type: FILE_DELETED,
@@ -56,10 +57,19 @@ export default function FileUpload({ maxFiles = 1, onChange }: DropZoneProps): J
                 fileName,
               })
             })
+            .catch(err => dispatch({
+              type: FILE_ERROR,
+              hash,
+            }))
         })
+        .catch(err => dispatch({
+          type: FILE_ERROR,
+          hash,
+        }))
     });
   }, [files])
 
+  // Watches the file names and updates the onChange event when something happens
   useEffect(() => {
     const fileNames = files.map(item => item.remoteName).filter(name => name !== null);
     onChange(fileNames as string[])

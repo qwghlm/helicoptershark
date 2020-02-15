@@ -7,9 +7,14 @@ const StyledFileItem = styled.div`
   padding: 1rem 0;
   margin: .2rem;
   border: 1px #FFF solid;
+  border-width: 0 0 1px 0;
   text-align: left;
   display: flex;
   flex-flow: row wrap;
+
+  &:last-child {
+    border-bottom-width: 0;
+  }
 
   & div:nth-child(1) {
     flex: 0 1 80px;
@@ -44,8 +49,6 @@ interface LoadingProps {
   status: number;
 }
 
-
-// TODO Error catching, setting filename, icons
 
 function LoadingIcon({ status }: LoadingProps): JSX.Element {
   let className;
